@@ -39,7 +39,7 @@ export default function Chat({ users }) {
         })
       }>
       <Avatar className="w-[49px] h-[49px]">
-        <AvatarImage src={userImg ? userImg : ""} />
+        <AvatarImage src={`https://ipfs.io/ipfs/${userImg}`} />
         <AvatarFallback>
           {getInitials(ethers.decodeBytes32String(user))}
         </AvatarFallback>

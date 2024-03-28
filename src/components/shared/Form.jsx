@@ -45,7 +45,8 @@ export default function Form() {
         }
       );
 
-      const fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+      const fileUrl = response.data.IpfsHash;
+      // const fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
 
       const readWriteProvider = getProvider(walletProvider);
       const signer = await readWriteProvider.getSigner();
@@ -69,7 +70,7 @@ export default function Form() {
         console.log("receipt: ", receipt);
 
         if (receipt.status) {
-          // navigate("/chat");
+          navigate("/chat");
           return toast("Successful transaction", {
             description: "Account created successfully",
           });
