@@ -19,6 +19,39 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
+const messages = [
+  {
+    message: "Hello",
+    mine: false,
+  },
+  {
+    message: "Hi, how are you?",
+    mine: true,
+  },
+  {
+    message: "I'm good, how are you?",
+    mine: false,
+  },
+  {
+    message:
+      "I'm good too, I've not been around for a while now and u no even bother check up on me",
+    mine: true,
+  },
+  {
+    message: "Shay you get babe? 😒",
+    mine: false,
+  },
+  {
+    message: "Oh yeah, I forgot 😅",
+    mine: true,
+  },
+  {
+    message:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit asperiores laboriosam, fuga quo aliquam provident nam accusantium, saepe modi culpa est doloremque sed beatae in rerum sunt dolore quidem nobis.",
+    mine: false,
+  },
+];
+
 export default function MessageContainer() {
   const [userMessage, setUserMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -127,24 +160,25 @@ export default function MessageContainer() {
 
       {/* //! users chat */}
       <div className="flex-1 lg:px-[63px] flex flex-col justify-end gap-1 py-4 overflow-y-auto">
-        {allMessages?.map((_, _key) => (
-          <div className="flex gap-3 justify-start w-full" key={_key}>
-            <div className="w-max max-w-[645px] h-max bg-[#202C33] rounded-md relative">
-              <span className="absolute top-0 -left-3 w-4 h-4 bg-[#202c33]"></span>
-              <span className="absolute top-1 -left-[26px] w-6 h-4 bg-[#111B21] rotate-45"></span>
-              <p className="text-sm py-1.5 px-3">
-                Boss with the money, I de greet
-              </p>
+        {messages?.map(({ message, mine }, _key) =>
+          mine ? (
+            <div className="flex gap-3 justify-end w-full" key={_key}>
+              <div className="w-max max-w-xl h-max bg-[#005C4B] rounded-md relative">
+                <span className="absolute top-0 -right-3 w-4 h-4 bg-[#005C4B]"></span>
+                <span className="absolute top-1 -right-[26px] w-6 h-4 bg-[#111B21] -rotate-45"></span>
+                <p className="text-sm py-1.5 px-3">{message}</p>
+              </div>
             </div>
-          </div>
-        ))}
-        <div className="flex gap-3 justify-end w-full">
-          <div className="w-max max-w-xl h-max bg-[#005C4B] rounded-md relative">
-            <span className="absolute top-0 -right-3 w-4 h-4 bg-[#005C4B]"></span>
-            <span className="absolute top-1 -right-[26px] w-6 h-4 bg-[#111B21] -rotate-45"></span>
-            <p className="text-sm py-1.5 px-2">{address}</p>
-          </div>
-        </div>
+          ) : (
+            <div className="flex gap-3 justify-start w-full" key={_key}>
+              <div className="w-max max-w-[645px] h-max bg-[#202C33] rounded-md relative">
+                <span className="absolute top-0 -left-3 w-4 h-4 bg-[#202c33]"></span>
+                <span className="absolute top-1 -left-[26px] w-6 h-4 bg-[#111B21] rotate-45"></span>
+                <p className="text-sm py-1.5 px-3">{message}</p>
+              </div>
+            </div>
+          )
+        )}
       </div>
 
       <form

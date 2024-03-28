@@ -34,7 +34,7 @@ export default function Sidebar() {
   }, [walletProvider]); // Add walletProvider to the dependency array
 
   return (
-    <div className="w-full max-w-[480px] flex-1 flex flex-col border-r h-full">
+    <div className="w-full max-w-[450px] flex-1 flex flex-col border-r h-full">
       <div className="w-full h-[59px] bg-[#202c33] flex items-center justify-between px-4">
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
