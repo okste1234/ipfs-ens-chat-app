@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import axios from "axios";
+import bytes32 from "bytes32";
+import { redirect } from "react-router-dom";
 
 export default function Form() {
   const [selectedFile, setSelectedFile] = useState();
@@ -35,7 +37,12 @@ export default function Form() {
       );
 
       const fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-      console.log("File URL:", fileUrl);
+      const data = {
+        username: bytes32({ input: username }),
+        image: fileUrl,
+      };
+
+      redirect("/chat");
     } catch (error) {
       console.log("Pinata API Error:", error);
     } finally {
@@ -89,6 +96,8 @@ export default function Form() {
             )}
           </Button>
         </form>
+
+        <w3m-button />
       </div>
     </div>
   );

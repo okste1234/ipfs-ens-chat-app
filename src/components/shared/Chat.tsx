@@ -1,26 +1,35 @@
+import { NavLink } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn } from "@/lib/utils";
 
-export default function Chat({
-  mine,
-  message,
-}: {
-  mine: boolean;
-  message: string;
-}) {
+// export const shortenAddress = (addr: string) => {
+//   return `${addr?.substring(0, 6)}...${addr?.substring(addr.length - 4)}`;
+// };
+
+export default function Chat({ chatId }: { chatId: number }) {
   return (
-    <div
-      className={cn("flex gap-3 justify-start w-full", {
-        "flex-row-reverse": mine,
-      })}>
-      {!mine && (
-        <div className="w-10 h-10 bg-secondary rounded-full hidden md:flex"></div>
-      )}
-      <div
-        className={cn("w-max max-w-xl h-max bg-secondary rounded-xl", {
-          "bg-primary": mine,
-        })}>
-        <p className="text-sm px-3 py-[10px]">{message}</p>
+    <NavLink
+      to={`/chat/message/${chatId}`}
+      className={({ isActive }) =>
+        cn("flex items-center pl-4 gap-4 h-[71px]", {
+          "bg-[#2A3942]": isActive,
+        })
+      }>
+      <Avatar className="w-[49px] h-[49px]">
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+
+      <div className="h-full border-b flex-1 pr-[15px] flex items-center justify-start">
+        <div className="flex flex-col">
+          <h1 className="text-base font-semibold capitalize">
+            Abdullahi Salihu
+          </h1>
+          <p className="text-xs text-muted-foreground font-normal">
+            0x0000000000000000000000000000000000000000
+          </p>
+        </div>
       </div>
-    </div>
+    </NavLink>
   );
 }

@@ -1,22 +1,14 @@
-import Form from "@/components/shared/Form";
-import MessageContainer from "@/components/shared/MessageContainer";
+import MaxWrapper from "@/components/shared/MaxWrapper";
 import Sidebar from "@/components/shared/Sidebar";
+import { Outlet } from "react-router-dom";
 
 export default function App() {
-  const isAuthenticated = false;
-
   return (
-    <div className="flex-1 flex flex-col h-screen p-6">
-      <div className="w-full h-full max-w-[1440px] overflow-y-auto bg-secondary/30 mx-auto rounded-md flex">
-        {isAuthenticated ? (
-          <>
-            <Sidebar />
-            <MessageContainer />
-          </>
-        ) : (
-          <Form />
-        )}
-      </div>
+    <div className="h-screen xl:p-5 bg-[#0C1317]">
+      <MaxWrapper className="bg-[#111B21] h-full flex flex-1">
+        <Sidebar />
+        <Outlet />
+      </MaxWrapper>
     </div>
   );
 }
