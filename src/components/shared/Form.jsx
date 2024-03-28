@@ -1,28 +1,37 @@
 import { Camera, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import axios from "axios";
 import { ethers } from "ethers";
-import { redirect } from "react-router-dom";
+
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { toast } from "sonner";
+
+import { useNavigate } from "react-router-dom";
+
+import { isSupportedChain } from "@/lib/utils";
+import { getChatAppContract, getProvider } from "@/constants";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
 
 export default function Form() {
   const [selectedFile, setSelectedFile] = useState();
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSelectImage = ({ target }: { target: any }) => {
-    setSelectedFile(target.files[0]);
-  };
+  const { walletProvider } = useWeb3ModalProvider();
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", selectedFile!);
+    const formData = new FormData();
+
+    if (!selectedFile && !username) {
+      toast("Please select an image or enter a username");
+      setIsLoading(false);
+    } else {
+      formData.append("file", selectedFile);
 
       const response = await axios.post(
         "https://api.pinata.cloud/pinning/pinFileToIPFS",
@@ -37,30 +46,66 @@ export default function Form() {
       );
 
       const fileUrl = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+
+      const readWriteProvider = getProvider(walletProvider);
+      const signer = await readWriteProvider.getSigner();
+
+      const contract = getChatAppContract(signer);
+
       const data = {
-        username: ethers.encodeBytes32String(username),
+        name: username,
         image: fileUrl,
       };
 
-      redirect("/chat");
       console.log(data);
-    } catch (error) {
-      console.log("Pinata API Error:", error);
-    } finally {
-      setIsLoading(false);
+
+      try {
+        const tx = await contract.userRegistration(
+          ethers.encodeBytes32String(username),
+          fileUrl
+        );
+        const receipt = await tx.wait();
+
+        console.log("receipt: ", receipt);
+
+        if (receipt.status) {
+          // navigate("/chat");
+          return toast("Successful transaction", {
+            description: "Account created successfully",
+          });
+        } else {
+          toast("Failed transaction", {
+            description: "Failed to create pool",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+
+        if (error.reason === "rejected") {
+          toast("Failed transaction", {
+            description: "You rejected the transaction",
+          });
+        } else {
+          toast("Error transaction", {
+            description: error,
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-sm flex flex-col items-center">
-        <input
+        <Input
           type="file"
           accept="image/*"
           hidden
           className="hidden"
           id="selectFile"
-          onChange={handleSelectImage}
+          onChange={(e) => setSelectedFile(e.target.files[0])}
         />
         <label
           htmlFor="selectFile"
@@ -69,6 +114,7 @@ export default function Form() {
             <img
               src={URL.createObjectURL(selectedFile)}
               className="w-full h-full object-cover rounded-full"
+              alt="Selected File"
             />
           ) : (
             <Camera className="w-16 h-16 text-muted-foreground" />

@@ -1,4 +1,4 @@
-import Form from "@/components/shared/Form";
+import Form from "../components/shared/Form";
 
 export default function Connect() {
   return (

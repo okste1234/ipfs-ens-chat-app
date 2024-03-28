@@ -1,13 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 import "./styles/index.css";
-import App from "./pages/App";
-import { Web3Modal } from "./providers/Web3Modal";
-import MessageContainer from "./pages/MessageContainer";
+import App from "./routes/App";
 import { Toaster } from "./components/ui/sonner";
-import Connect from "./pages/Connect";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Connect from "./routes/Connect";
+import MessageContainer from "./routes/MessageContainer";
+import { Web3Modal } from "./provider/WalletProvider";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +25,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Web3Modal>
       <Toaster />

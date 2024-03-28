@@ -36,6 +36,6 @@ if (projectId) {
   console.error("Project ID is not defined.");
 }
 
-export function Web3Modal({ children }: { children: ReactNode }) {
+export function Web3Modal({ children }) {
   return children;
 }
