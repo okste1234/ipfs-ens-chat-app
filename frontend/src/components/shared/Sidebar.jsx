@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import { ethers } from "ethers";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import DisconnectWallet from "./DisconnectWallet";
+import { Loader2 } from "lucide-react";
 
 export default function Sidebar() {
   const { address } = useWeb3ModalAccount();
@@ -16,9 +17,10 @@ export default function Sidebar() {
 
   const [allUsers, setAllUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const interval = setInterval(async () => {
       const readWriteProvider = getProvider(walletProvider);
       const signer = await readWriteProvider.getSigner();
       const contract = getEnsContract(signer);
@@ -36,10 +38,12 @@ export default function Sidebar() {
         setAllUsers(tx);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
-    };
+    }, 5000);
 
-    fetchData();
+    return () => clearInterval(interval);
   }, [walletProvider, address]);
 
   return (
@@ -71,22 +75,30 @@ export default function Sidebar() {
       </div>
 
       <div className="flex-1 overflow-y-auto flex flex-col">
-        {allUsers.map((u, _key) => (
-          <NavLink
-            to={`/chat/message/${u[0]}`}
-            key={_key}
-            className={({ isActive }) =>
-              cn("w-full px-3 py-2 rounded-md", {
-                "bg-secondary/80": isActive,
-                "hover:bg-secondary/30": !isActive,
-              })
-            }>
-            <h1 className="text-sm font-semibold">
-              {ethers.decodeBytes32String(u[0])}
-            </h1>
-            <p className="text-xs text-muted-foreground truncate">{u[2]}</p>
-          </NavLink>
-        ))}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-6">
+            <Loader2 className="w-4 h-4 animate-spin" />
+          </div>
+        ) : (
+          allUsers.map((u, _key) => {
+            return (
+              <NavLink
+                to={`/chat/message/${u[0]}`}
+                key={_key}
+                className={({ isActive }) =>
+                  cn("w-full px-3 py-2 rounded-md", {
+                    "bg-secondary/80": isActive,
+                    "hover:bg-secondary/30": !isActive,
+                  })
+                }>
+                <h1 className="text-sm font-semibold">
+                  {ethers.decodeBytes32String(u[0])}
+                </h1>
+                <p className="text-xs text-muted-foreground truncate">{u[2]}</p>
+              </NavLink>
+            );
+          })
+        )}
       </div>
     </div>
   );

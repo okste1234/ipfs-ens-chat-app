@@ -14,16 +14,16 @@ import { getChatAppContract, getEnsContract, getProvider } from "@/constants";
 import { toast } from "sonner";
 
 export default function Chats() {
+  const { id } = useParams();
   const { walletProvider } = useWeb3ModalProvider();
   const { address } = useWeb3ModalAccount();
 
   const [messages, setMessages] = useState([]);
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState([]);
+  const [currentReceiver, setCurrentReceiver] = useState([]);
   const [userMessage, setUserMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state to true
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,9 +68,9 @@ export default function Chats() {
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true); // Set loading state to true when useEffect starts
 
-    const timeout = setInterval(async () => {
+    const interval = setInterval(async () => {
       const readWriteProvider = getProvider(walletProvider);
       const signer = await readWriteProvider.getSigner();
 
@@ -83,10 +83,12 @@ export default function Chats() {
         let users = await ensContract.getAllUserProfile();
 
         const activeUser = users.find((u) => u[2] === address);
+        const receiver = users.find((u) => u[0] === id);
 
         setCurrentUser(activeUser);
+        setCurrentReceiver(receiver);
+
         setMessages(messages);
-        setIsLoading(false);
       } catch (error) {
         if (error.reason === "rejected") {
           toast("Failed transaction", {
@@ -99,11 +101,11 @@ export default function Chats() {
           });
         }
       } finally {
-        setIsLoading(false);
+        setIsLoading(false); // Set loading state to false after fetching messages
       }
-    }, 10);
+    }, 100);
 
-    return () => clearInterval(timeout);
+    return () => clearInterval(interval);
   }, [address, id, walletProvider]);
 
   return (
@@ -121,34 +123,43 @@ export default function Chats() {
             <Loader2 className="w-5 h-5 animate-spin" />
           </div>
         ) : (
-          messages.map((message, _key) => (
-            <div
-              key={_key}
-              className={cn("flex gap-3 py-6 px-4 border-b last:border-b-0", {
-                "bg-secondary/40": currentUser[0] !== message[1],
-              })}>
-              <div className="mx-auto max-w-[784px] w-full flex gap-3">
-                <Avatar className="w-8 h-8">
-                  <AvatarImage
-                    src={`https://bronze-gigantic-quokka-778.mypinata.cloud/ipfs/${currentUser[1]}`}
-                  />
-                  <AvatarFallback className="text-xs">
-                    {getInitials(ethers.decodeBytes32String(message[1]))}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col gap-1 py-1">
-                  <h1 className="text-base">
-                    {currentUser[0] === id
-                      ? "You"
-                      : currentUser[0] === message[1]
-                      ? ethers.decodeBytes32String(id)
-                      : "You"}
-                  </h1>
-                  <p className="text-sm">{message[0]}</p>
+          messages?.map((message, _key) => {
+            return (
+              <div
+                key={_key}
+                className={cn("flex gap-3 py-6 px-4 border-b last:border-b-0", {
+                  "bg-secondary/40": currentUser[0] !== message[1],
+                })}>
+                <div className="mx-auto max-w-[784px] w-full flex gap-3">
+                  <Avatar className="w-6 h-6">
+                    <AvatarImage
+                      src={`https://bronze-gigantic-quokka-778.mypinata.cloud/ipfs/${
+                        currentUser[0] !== message[1]
+                          ? currentUser[1]
+                          : currentReceiver[1]
+                      }`}
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="text-xs">
+                      {getInitials(ethers.decodeBytes32String(message[1]))}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col gap-1 pt-[2px]">
+                    <h1 className="text-sm font-semibold">
+                      {currentUser[0] === id
+                        ? "You"
+                        : currentUser[0] === message[1]
+                        ? ethers.decodeBytes32String(id)
+                        : "You"}
+                    </h1>
+                    <p className="text-base leading-7 font-normal text-muted-foreground">
+                      {message[0]}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 
