@@ -1,25 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/index.css";
-import App from "./routes/App";
 import { Toaster } from "./components/ui/sonner";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Connect from "./routes/Connect";
-import MessageContainer from "./routes/MessageContainer";
 import { Web3Modal } from "./provider/WalletProvider";
+import Root from "./routes/Root";
+import Messenger from "./routes/Messenger";
+import Chats from "./components/shared/Chats";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Connect />,
+    element: <Root />,
   },
   {
     path: "/chat",
-    element: <App />,
+    element: <Messenger />,
     children: [
       {
         path: "message/:id",
-        element: <MessageContainer />,
+        element: <Chats />,
       },
     ],
   },

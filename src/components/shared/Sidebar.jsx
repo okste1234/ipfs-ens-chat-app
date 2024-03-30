@@ -1,73 +1,92 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "../ui/button";
-import { EllipsisVertical, ListFilter } from "lucide-react";
-import { Input } from "../ui/input";
-import Chat from "./Chat";
-import { useEffect, useState } from "react"; // Added useState
-import { useWeb3ModalProvider } from "@web3modal/ethers/react";
-import { getChatAppContract, getProvider } from "@/constants";
+import { getEnsContract, getProvider } from "@/constants";
+import { cn, getInitials, shortenAddress } from "@/lib/utils";
+import {
+  useWeb3ModalAccount,
+  useWeb3ModalProvider,
+} from "@web3modal/ethers/react";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { ethers } from "ethers";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import DisconnectWallet from "./DisconnectWallet";
 
 export default function Sidebar() {
+  const { address } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
-  const [everyUser, setEveryUser] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  // fetchAllUserNames
+  const [allUsers, setAllUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
+      const readWriteProvider = getProvider(walletProvider);
+      const signer = await readWriteProvider.getSigner();
+      const contract = getEnsContract(signer);
 
       try {
-        const readWriteProvider = getProvider(walletProvider);
-        const signer = await readWriteProvider.getSigner();
-        const contract = getChatAppContract(signer);
-        const tx = await contract.fetchAllUserNames();
-        setEveryUser(tx);
+        let tx = await contract.getAllUserProfile();
+
+        // Find the current user
+        const user = tx.find((u) => u[2] === address);
+        setCurrentUser(user);
+
+        // Filter out the current user from the list
+        tx = tx.filter((u) => u[2] !== address);
+
+        setAllUsers(tx);
       } catch (error) {
         console.log(error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
-    fetchData(); // Call the async function inside useEffect
-  }, [walletProvider]); // Add walletProvider to the dependency array
+    fetchData();
+  }, [walletProvider, address]);
 
   return (
-    <div className="w-full max-w-[450px] flex-1 flex flex-col border-r h-full">
-      <div className="w-full h-[59px] bg-[#202c33] flex items-center justify-between px-4">
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+    <div className="p-3 max-w-[320px] w-full flex flex-col gap-3 border-r">
+      <div className="w-full pb-2 border-b">
+        {currentUser && (
+          <div className="h-12 w-full flex items-center gap-2">
+            <Avatar className="w-10 h-10">
+              <AvatarImage
+                src={`https://bronze-gigantic-quokka-778.mypinata.cloud/ipfs/${currentUser[1]}`}
+              />
+              <AvatarFallback className="text-xs">
+                {getInitials(ethers.decodeBytes32String(currentUser[0]))}
+              </AvatarFallback>
+            </Avatar>
 
-        <div className="flex items-center gap-2">
-          <Button size="icon" className="rounded-full" variant="ghost">
-            <EllipsisVertical className="w-4 h-4" />
-          </Button>
-        </div>
+            <div className="flex flex-col flex-1 justify-center">
+              <h1 className="text-base font-semibold">
+                {ethers.decodeBytes32String(currentUser[0])}
+              </h1>
+              <p className="text-xs text-muted-foreground truncate">
+                {shortenAddress(currentUser[2])}
+              </p>
+            </div>
+
+            <DisconnectWallet />
+          </div>
+        )}
       </div>
 
-      <div className="flex-1 py-2 overflow-y-auto">
-        <div className="px-4 flex items-center gap-3 mb-2">
-          <Input
-            className="bg-[#202c33] border-0 font-light"
-            placeholder="Search or start a new chat"
-          />
-          <ListFilter className="w-5 h-5" />
-        </div>
-
-        <div className="flex flex-col-reverse">
-          {isLoading ? (
-            <div>Loading</div>
-          ) : everyUser <= 0 ? (
-            <div className="w-full py-6 flex items-center justify-center">
-              <p>No chats yet.</p>
-            </div>
-          ) : (
-            <Chat users={everyUser} />
-          )}
-        </div>
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        {allUsers.map((u, _key) => (
+          <NavLink
+            to={`/chat/message/${u[0]}`}
+            key={_key}
+            className={({ isActive }) =>
+              cn("w-full px-3 py-2 rounded-md", {
+                "bg-secondary/80": isActive,
+                "hover:bg-secondary/30": !isActive,
+              })
+            }>
+            <h1 className="text-sm font-semibold">
+              {ethers.decodeBytes32String(u[0])}
+            </h1>
+            <p className="text-xs text-muted-foreground truncate">{u[2]}</p>
+          </NavLink>
+        ))}
       </div>
     </div>
   );

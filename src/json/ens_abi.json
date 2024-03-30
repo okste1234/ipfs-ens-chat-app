@@ -1,5 +1,23 @@
 [
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_username",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "_imageUrl",
+        "type": "string"
+      }
+    ],
+    "name": "registerUser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -13,6 +31,12 @@
         "internalType": "bytes32",
         "name": "username",
         "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "url",
+        "type": "string"
       }
     ],
     "name": "registrationSuccessful",
@@ -26,7 +50,7 @@
         "type": "address"
       }
     ],
-    "name": "addressToName",
+    "name": "addressToUsername",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -38,13 +62,19 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "fetchAllUsernames",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "checkIsRegistered",
     "outputs": [
       {
-        "internalType": "bytes32[]",
+        "internalType": "bool",
         "name": "",
-        "type": "bytes32[]"
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -58,12 +88,47 @@
         "type": "bytes32"
       }
     ],
-    "name": "getUserAddressByUsername",
+    "name": "getAddressByUsername",
     "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllUserProfile",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "name",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "userAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isRegistered",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct EnsApp.Profile[]",
+        "name": "",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
@@ -91,38 +156,6 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "name": "nameToAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "username",
-        "type": "bytes32"
-      }
-    ],
-    "name": "registerUser",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
@@ -134,6 +167,25 @@
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "usernameToAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

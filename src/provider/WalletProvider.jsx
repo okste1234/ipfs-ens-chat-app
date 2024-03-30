@@ -1,5 +1,4 @@
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
-import { ReactNode } from "react";
 
 export const SEPOLIA_CHAIN_ID = 11155111;
 

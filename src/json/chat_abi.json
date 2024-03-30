@@ -2,69 +2,8 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_ensAddr",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "bytes32",
-        "name": "senderUsername",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "_receiverUsername",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "_message",
-        "type": "string"
-      }
-    ],
-    "name": "MessageSuccessFul",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "username",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "imageUrl",
-        "type": "string"
-      }
-    ],
-    "name": "registrationSuccessful",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_receiverUsername",
+        "name": "_receiver",
         "type": "bytes32"
       },
       {
@@ -81,100 +20,38 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "username",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "imageUrl",
-        "type": "string"
+        "internalType": "address",
+        "name": "_ensAddr",
+        "type": "address"
       }
     ],
-    "name": "userRegistration",
-    "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "constructor"
   },
   {
-    "inputs": [],
-    "name": "fetchAllUserNames",
-    "outputs": [
-      {
-        "internalType": "bytes32[]",
-        "name": "",
-        "type": "bytes32[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
+    "anonymous": false,
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "username",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getChatHistory",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "message",
-            "type": "string"
-          }
-        ],
-        "internalType": "struct ChatApplication.Chat[]",
+        "indexed": true,
+        "internalType": "address",
         "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "_senderUsername",
-        "type": "bytes32"
+        "type": "address"
       },
       {
-        "internalType": "bytes32",
-        "name": "_receiverUsername",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getChatHistory",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "message",
-            "type": "string"
-          }
-        ],
-        "internalType": "struct ChatApplication.Chat[]",
+        "indexed": true,
+        "internalType": "address",
         "name": "",
-        "type": "tuple[]"
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "name": "SentMessage",
+    "type": "event"
   },
   {
     "inputs": [
@@ -184,12 +61,43 @@
         "type": "bytes32"
       }
     ],
-    "name": "getUserAddressByUsername",
+    "name": "getAddressByUsername",
     "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_receiver",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getMessages",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "message",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "name",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct ChatApp.Message[]",
+        "name": "",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
@@ -203,31 +111,12 @@
         "type": "address"
       }
     ],
-    "name": "getUsernameByAddress",
+    "name": "getUsernameByAddr",
     "outputs": [
       {
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "username",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getUserUrl",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "stateMutability": "view",
