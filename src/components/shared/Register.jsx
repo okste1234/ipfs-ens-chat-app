@@ -150,7 +150,7 @@ export default function Register() {
                 <img
                   src={URL.createObjectURL(formDetails.profile)}
                   alt=""
-                  className="w-full h-full rounded-full"
+                  className="w-full h-full rounded-full object-cover"
                 />
               ) : (
                 <Camera className="w-12 h-12 text-muted-foreground" />

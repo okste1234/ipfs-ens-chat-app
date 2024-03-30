@@ -20,22 +20,22 @@ export default function Header() {
             <Link
               to="/"
               className="hover:text-primary text-foreground text-base font-light">
-              Case Studies
+              Home
             </Link>
             <Link
               to="/"
               className="hover:text-primary text-foreground text-base font-light">
-              Out Team
+              Messages
             </Link>
             <Link
               to="/"
               className="hover:text-primary text-foreground text-base font-light">
-              Careers
+              Contacts
             </Link>
             <Link
               to="/"
               className="hover:text-primary text-foreground text-base font-light">
-              Resources
+              Settings
             </Link>
           </div>
         </div>
