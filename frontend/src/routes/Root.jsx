@@ -72,10 +72,10 @@ export default function Root() {
       <Hero />
 
       <Mx2>
-        <div className="bg-secondary w-full aspect-[1.7] rounded-lg">
+        <div className="bg-secondary w-full h-auto p-2 rounded-xl">
           <img
             src="/assets/he.png"
-            className="w-full h-full rounded-lg object-cover"
+            className="w-full h-full object-contain rounded-xl"
           />
         </div>
       </Mx2>
