@@ -116,7 +116,7 @@ export default function Register() {
       <DialogTrigger asChild>
         <button
           disabled={!isConnected}
-          className="rounded-full border py-3 px-6 w-max text-sm backdrop-blur-md uppercase flex items-center disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-0">
+          className="rounded-full border py-3 px-6 w-max text-sm bg-primary uppercase flex items-center disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-0">
           Register <ArrowRight className="w-4 h-4 ml-2" />
         </button>
       </DialogTrigger>
