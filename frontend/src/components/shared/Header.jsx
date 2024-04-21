@@ -14,7 +14,7 @@ export default function Header() {
       <Mx1 className="flex items-center justify-between h-full">
         <div className="flex items-center">
           <h1 className="text-foreground text-lg font-semibold pr-10 border-r">
-            MeetMe
+            LinkTalk
           </h1>
           <div className="flex items-center gap-6 pl-10">
             <Link
