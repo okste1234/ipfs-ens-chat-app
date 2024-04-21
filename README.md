@@ -1,4 +1,7 @@
-Introducing MeetMe, a decentralized chat application on Morph Testnet that utilizes blockchain technology and harnesses the power of Ethereum Name Service (ENS) contracts. MeetMe is tailored for open conversations with no security concerns, allowing users to engage in transparent and p2p discussions securely on-chain.
+ENS: 0x943D2628C812502C0faa7A6C77CAF797eCE743d5
+MeetMe(ChatApp): 0x90C5cf4f79C96403c438a42d70FdF676952C9bdf
+
+MeetMe, a decentralized chat application on Morph Testnet that utilizes blockchain technology and harnesses the power of Ethereum Name Service (ENS) contracts. MeetMe is tailored for open conversations with no security concerns, allowing users to engage in transparent and p2p discussions securely on-chain.
 
 To showcase the functionality of the Ethereum Name Service (ENS) contracts, MeetMe is deeply integrated, allowing users to easily discover and connect with others using human-readable addresses/string. This integration not only simplifies the process of finding and interacting with fellow participants but also serves as a robust testbed for the resilience and effectiveness of the ENS contract.
 
