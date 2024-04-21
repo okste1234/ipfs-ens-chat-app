@@ -6,4 +6,4 @@ In LinkTalk, users can initiate and participate in conversations that are secure
 
 LinkTalk usecase is in open community, DAO open proposals. And, it showcase the deployed ENS contract,  a decentralized domain name system built on the Morph blockchain. Similar to how traditional domain name systems (DNS) translate human-readable website names into IP addresses, ENS converts human-readable names into Ethereum addresses, smart contract addresses. We demo showing connection with friends effortlessly, as you can easily find and communicate with them using human-readable addresses.
 
-Check out the live site [here](https://link-talk-morph.vercel.app/)
+Check out the live site [here](https://ipfs-ens-chat-app.vercel.app/)
