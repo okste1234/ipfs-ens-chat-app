@@ -70,7 +70,7 @@ export default function Chats() {
   useEffect(() => {
     setIsLoading(true); // Set loading state to true when useEffect starts
 
-    const interval = setInterval(async () => {
+    const fetchData = async () => {
       const readWriteProvider = getProvider(walletProvider);
       const signer = await readWriteProvider.getSigner();
 
@@ -103,9 +103,9 @@ export default function Chats() {
       } finally {
         setIsLoading(false); // Set loading state to false after fetching messages
       }
-    }, 100);
+    };
 
-    return () => clearInterval(interval);
+    fetchData();
   }, [address, id, walletProvider]);
 
   return (

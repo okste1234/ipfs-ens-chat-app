@@ -24,7 +24,7 @@ export const getEnsContract = (providerOrSigner) =>
 
 // read only provider pointing to sepolia. It allows read only access to the sepolia blockchain
 export const readOnlyProvider = new ethers.JsonRpcProvider(
-  `https://sepolia.infura.io/v3/${VITE_INFURA_ID}`
+  `https://rpc-testnet.morphl2.io`
 );
 
 // read/write provider, that allows you to read data and also sign transaction on whatever chain it's pointing to

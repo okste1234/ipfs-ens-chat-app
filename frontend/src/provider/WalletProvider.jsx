@@ -1,17 +1,17 @@
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
 
-export const SEPOLIA_CHAIN_ID = 11155111;
+export const MORPH_CHAIN_ID = 2710;
 
 // 1. Get projectId at https://cloud.walletconnect.com
 const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID || "";
 
 // 2. Set chains
-const sepolia = {
-  chainId: SEPOLIA_CHAIN_ID,
-  name: "Sepolia Testnet",
+const morph = {
+  chainId: MORPH_CHAIN_ID,
+  name: "Morph Testnet",
   currency: "ETH",
-  explorerUrl: "https://sepolia.infura.io/v3/",
-  rpcUrl: `https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_ID}`,
+  explorerUrl: "https://explorer-testnet.morphl2.io/",
+  rpcUrl: `https://rpc-testnet.morphl2.io`,
 };
 
 // 3. Create a metadata object
@@ -26,7 +26,7 @@ const metadata = {
 if (projectId) {
   createWeb3Modal({
     ethersConfig: defaultConfig({ metadata }),
-    chains: [sepolia],
+    chains: [morph],
     projectId,
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
     enableOnramp: true, // Optional - false as default

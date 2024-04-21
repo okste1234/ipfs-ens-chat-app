@@ -5,8 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const isSupportedChain = (chainId: number) =>
-  Number(chainId) === 11155111;
+export const isSupportedChain = (chainId: number) => Number(chainId) === 2710;
 
 export const shortenAddress = (addr: string) => {
   return `${addr?.substring(0, 6)}...${addr?.substring(addr.length - 4)}`;

@@ -66,6 +66,8 @@ export default function Register() {
           // const fileUrl = `https://gateway.pinata.cloud/ipfs/${response.IpfsHash}`;
           // const fileUrl = `https://bronze-gigantic-quokka-778.mypinata.cloud/ipfs/${response.IpfsHash}`;
 
+          console.log(fileUrl);
+
           const readWriteProvider = getProvider(walletProvider);
           const signer = await readWriteProvider.getSigner();
 
